@@ -53,7 +53,7 @@ const StyledHeader = styled.div`
 function Header() {
     return (
         <StyledHeader>
-            <img src="banner" />
+            {/* <img src="banner" /> */}
 
             <section className="user-info">
                 <img src={`https://avatars.githubusercontent.com/${config.github}.png`} />
