@@ -1,22 +1,19 @@
 import React from "react"
 import config from "../config.json"
 import styled from "styled-components"
-import { CSSReset } from "../src/components/CSSReset"
 import Menu from "../src/components/Menu/index"
 import { StyledTimeline } from "../src/components/Timeline"
 
 function HomePage() {
-    const styleHomePage = {
-        display: "flex",
-        flexDirection: "column",
-        flex: 1,
-    }
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
 
     return (
         <>
-            <CSSReset />
-            <div style={styleHomePage}>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
+            }}>
                 {/* Prop Drilling */}
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}/>
                 <Header />
@@ -25,7 +22,7 @@ function HomePage() {
                 </Timeline>
             </div>
         </>
-    )
+    );
 }
   
 export default HomePage
@@ -39,6 +36,8 @@ export default HomePage
 // }
 
 const StyledHeader = styled.div`
+    background-color: ${({ theme }) => theme.backgroundLevel1};
+
     img {
         width: 80px;
         height: 80px;
@@ -61,10 +60,16 @@ function Header() {
     return (
         <StyledHeader>
             <StyledBanner />
-
             <section className="user-info">
                 <img src={`https://avatars.githubusercontent.com/${config.github}.png`} />
-                {config.name}
+                <div>
+                    <h2>
+                        {config.name}
+                    </h2>
+                    <p>
+                        {config.job}
+                    </p>
+                </div>
             </section>
         </StyledHeader>
     )
@@ -73,9 +78,10 @@ function Header() {
 function Timeline({searchValue, ...propriedades}) {
     // console.log("Dentro do componente", propriedades.playlists);
     const playlistNames = Object.keys(propriedades.playlists);
-
+    // Statement
+    // Retorno por expressão
     return (
-        <StyledTimeline>
+       <StyledTimeline>
             {playlistNames.map((playlistName) => {
                 const videos = propriedades.playlists[playlistName];
                 // console.log(playlistName);
@@ -84,20 +90,22 @@ function Timeline({searchValue, ...propriedades}) {
                     <section key={playlistName}>
                         <h2>{playlistName}</h2>
                         <div>
-                            {videos.filter((video) => {
-                                const titleNormalized = video.title.toLowerCase();
-                                const searchValueNormalized = searchValue.toLowerCase();
-                                return titleNormalized.includes(searchValueNormalized)
-                            }).map((video) => {
-                                return (
-                                    <a key={video.url} href={video.url}>
-                                        <img src={video.thumb} />
-                                        <span>
-                                            {video.title}
-                                        </span>
-                                    </a>
-                                )
-                            })}
+                            {videos
+                                .filter((video) => {
+                                    const titleNormalized = video.title.toLowerCase();
+                                    const searchValueNormalized = searchValue.toLowerCase();
+                                    return titleNormalized.includes(searchValueNormalized)
+                                })
+                                .map((video) => {
+                                    return (
+                                        <a key={video.url} href={video.url}>
+                                            <img src={video.thumb} />
+                                            <span>
+                                                {video.title}
+                                            </span>
+                                        </a>
+                                    )
+                                })}
                         </div>
                     </section>
                 )
